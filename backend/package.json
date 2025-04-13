@@ -6,6 +6,7 @@
   "dependencies": {
     "@prisma/client": "^6.6.0",
     "express": "4",
+    "express-session": "^1.18.1",
     "prisma": "^6.6.0"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import rootRouter from "./routes/index.js";
@@ -7,8 +8,28 @@ const port = process.env.PORT || 8000;
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const frontendDir = path.join(__dirname, "../../frontend/dist");
+
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
 app.use(express.static(frontendDir));
 app.use(express.json());
+app.use(
+  session({
+    cookie: {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: null, // session cookie
+    },
+    // use random secret
+    name: "eicmmwbozkduwsc", // don't omit this option
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
 app.use(rootRouter);
 
 app.get("*", (req, res) => {
