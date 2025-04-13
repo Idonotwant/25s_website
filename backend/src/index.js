@@ -2,6 +2,7 @@ import express from "express";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import rootRouter from "./routes/index.js";
+import { prisma } from "./adapters.js";
 const port = process.env.PORT || 8000;
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -20,4 +21,8 @@ app.get("*", (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
+});
+
+process.on("exit", async () => {
+  await prisma.$disconnect();
 });
