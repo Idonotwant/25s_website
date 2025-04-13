@@ -4,6 +4,9 @@ import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import rootRouter from "./routes/index.js";
 import { prisma } from "./adapters.js";
+import cookieParser from "cookie-parser";
+import { csrfErrorHandler, doubleCsrfProtection } from "./csrf.js";
+
 const port = process.env.PORT || 8000;
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -12,8 +15,8 @@ const frontendDir = path.join(__dirname, "../../frontend/dist");
 if (process.env.NODE_ENV === "production") {
   app.set("trust proxy", 1);
 }
+app.use(cookieParser());
 app.use(express.static(frontendDir));
-app.use(express.json());
 app.use(
   session({
     cookie: {
@@ -29,7 +32,9 @@ app.use(
     saveUninitialized: false,
   })
 );
-
+app.use(express.json());
+app.use(doubleCsrfProtection);
+app.use(csrfErrorHandler);
 app.use(rootRouter);
 
 app.get("*", (req, res) => {
