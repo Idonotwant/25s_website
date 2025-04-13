@@ -8,7 +8,7 @@ const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const frontendDir = path.join(__dirname, "../../frontend/dist");
 app.use(express.static(frontendDir));
-
+app.use(express.json());
 app.use(rootRouter);
 
 app.get("*", (req, res) => {
