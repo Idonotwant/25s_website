@@ -1,13 +1,15 @@
 import express from "express";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-
+import rootRouter from "./routes/index.js";
 const port = process.env.PORT || 8000;
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const frontendDir = path.join(__dirname, "../../frontend/dist");
-
 app.use(express.static(frontendDir));
+
+app.use(rootRouter);
+
 app.get("*", (req, res) => {
   // Keep as the last route
   if (!req.originalUrl.startsWith("/api")) {
