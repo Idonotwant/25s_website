@@ -1,12 +1,24 @@
 import { prisma } from "../../../../adapters.js";
+import bcrypt from "bcrypt";
+async function verifyPassword(plainTextPassword, hashedPassword) {
+  return await bcrypt.compare(plainTextPassword, hashedPassword);
+}
 export async function login(req, res) {
-  const { id } = req.body;
-  const user = await prisma.user.findUnique({
-    where: { id },
-  });
-  if (!user) {
-    return res.status(401).json({ error: "Invalid credentials" });
+  const { username, password } = req.body;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { username: username },
+    });
+    if (!user) {
+      return res.status(401).json({ error: "Cannot find user" });
+    }
+    if (!(await verifyPassword(password, user.password))) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    } else {
+      req.session.userId = user.id;
+      return res.status(200).json({ message: "Login successful" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
   }
-  req.session.userId = user.id;
-  return res.json({ user: user, id: req.session.userId });
 }

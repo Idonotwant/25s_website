@@ -1968,13 +1968,13 @@ export namespace Prisma {
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    username?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     picture?: BytesNullableFilter<"User"> | Uint8Array | null
-  }, "id">
+  }, "id" | "username">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder

@@ -5,9 +5,7 @@ async function hashPassword(plainTextPassword) {
   const saltRounds = 10;
   return await bcrypt.hash(plainTextPassword, saltRounds);
 }
-async function verifyPassword(plainTextPassword, hashedPassword) {
-  return await bcrypt.compare(plainTextPassword, hashedPassword);
-}
+
 export async function getAllUsers(req, res) {
   const allUsers = await prisma.user.findMany();
   return res.json(allUsers);
