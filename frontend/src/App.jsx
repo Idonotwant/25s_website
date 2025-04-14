@@ -1,36 +1,26 @@
-import { useState } from "react";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import services from "./services/index.js";
+import Layout from "./pages/Layout.jsx";
+import Home from "./pages/Home.jsx";
+import About from "./pages/About.jsx";
+import Posts from "./pages/Posts.jsx";
+import Profile from "./pages/Profile.jsx";
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
 function App() {
-  const [username, setUsername] = useState("");
-  const handleclick = () => {
-    services.user.getAll().then((data) => {
-      console.log(data);
-    });
-  };
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    services.user.createOne({ name: username }).then((data) => {
-      console.log(data);
-    });
-    setUsername("");
-  };
   return (
-    <>
-      <button onClick={handleclick}>getAll users</button>
-      <form onSubmit={handleFormSubmit}>
-        <input
-          type="text"
-          placeholder="name"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-        <button type="submit">Create User</button>
-      </form>
-    </>
+    <HashRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/about" element={<About />} />
+          <Route path="/posts" element={<Posts />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="*" element={<Home />} />
+        </Route>
+      </Routes>
+    </HashRouter>
   );
 }
 
