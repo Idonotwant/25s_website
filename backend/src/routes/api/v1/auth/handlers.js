@@ -16,6 +16,7 @@ export async function login(req, res) {
       return res.status(401).json({ error: "Invalid credentials" });
     } else {
       req.session.userId = user.id;
+      console.log("User logged in:", user.username);
       return res.status(200).json({ message: "Login successful" });
     }
   } catch (error) {

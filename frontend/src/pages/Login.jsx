@@ -5,11 +5,13 @@ function Login() {
     username: "",
     password: "",
   });
+  const [imgURL, setImgURL] = useState("");
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = JSON.parse(JSON.stringify(formData));
     const response = await services.user.login(data);
-    console.log("response: ", response);
+    const imgurl = await services.user.getImage();
+    setImgURL(imgurl);
     setFormData({
       username: "",
       password: "",
@@ -25,6 +27,7 @@ function Login() {
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      {imgURL !== "" ? <img src={imgURL} alt="User Picture" /> : <></>}
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
           Create your account

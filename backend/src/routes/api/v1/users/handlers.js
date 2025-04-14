@@ -1,15 +1,13 @@
 import { prisma } from "../../../../adapters.js";
 import bcrypt from "bcrypt";
-
+import multer from "multer";
+import { fileTypeFromBuffer } from "file-type";
+const upload = multer({ storage: multer.memoryStorage() });
 async function hashPassword(plainTextPassword) {
   const saltRounds = 10;
   return await bcrypt.hash(plainTextPassword, saltRounds);
 }
 
-export async function getAllUsers(req, res) {
-  const allUsers = await prisma.user.findMany();
-  return res.json(allUsers);
-}
 export async function createOneUser(req, res) {
   try {
     const { username, password } = req.body;
@@ -17,7 +15,8 @@ export async function createOneUser(req, res) {
     const user = await prisma.user.create({
       data: { username: username, password: hashedPassword },
     });
-    return res.status(201).json(user.id);
+    console.log("user created:", user.username);
+    return res.status(201);
   } catch (error) {
     console.error("Error creating user:", error);
     console.log("body", req.body);
@@ -25,10 +24,55 @@ export async function createOneUser(req, res) {
   }
 }
 
+export async function updateOneUser(req, res) {
+  try {
+    const id = req.session.userId;
+    if (typeof id !== "string") {
+      console.error("User not logged in");
+      return res.status(400).json({ error: "Please login first" });
+    }
+    if (!req.file) {
+      console.error("No file uploaded");
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+    const { originalname, mimetype, buffer } = req.file;
+    const user = await prisma.user.update({
+      where: { id },
+      data: { picture: buffer },
+    });
+    console.log("User updated:", user.username);
+    return res.json({
+      message: "File uploaded successfully",
+    });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return res.status(500).json({ error: "Failed to update user." });
+  }
+}
+
 export async function getOneUser(req, res) {
-  const id = parseInt(req.params.id);
-  if (isNaN(id)) return res.status(400).json({ error: "Invalid id" });
-  const user = await prisma.user.findUnique({ where: { id } });
-  if (user == null) return res.status(404).json({ error: "Not found" });
-  return res.json(user);
+  console.log("getOneUser");
+
+  try {
+    const id = req.session.userId;
+    if (typeof id !== "string") {
+      console.error("User not logged in");
+      return res.status(400).json({ error: "Please login first" });
+    }
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: { picture: true },
+    });
+    if (!user || !user.picture) {
+      return res.status(404).json({ error: "Picture not found" });
+    }
+    const raw = user.picture;
+    const buffer = Buffer.from(raw, "hex");
+    const typeInfo = await fileTypeFromBuffer(buffer);
+    res.set("Content-Type", typeInfo?.mime || "image/png");
+    res.send(buffer);
+  } catch (error) {
+    console.error("Error getting user picture:", error);
+    return res.status(500).json({ error: "Failed to get user picture." });
+  }
 }

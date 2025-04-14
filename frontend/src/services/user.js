@@ -8,8 +8,24 @@ export const user = {
     const { data } = await api.post("/auth", { username, password });
     return data;
   },
-  async getAll() {
-    const { data } = await api.get("/users");
+  async uploadImage(file) {
+    const formData = new FormData();
+    formData.append("file", file); // 確保 key 為 "file"
+
+    const { data } = await api.post("/users/update", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return data;
+  },
+  async getImage() {
+    const res = await api.get("/users", {
+      responseType: "blob",
+      withCredentials: true,
+    });
+
+    const imgURL = URL.createObjectURL(res.data);
+    return imgURL;
   },
 };

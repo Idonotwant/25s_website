@@ -1,7 +1,9 @@
 import { Router } from "express";
-import { getAllUsers, getOneUser, createOneUser } from "./handlers.js";
+import multer from "multer";
+import { getOneUser, createOneUser, updateOneUser } from "./handlers.js";
 const router = Router();
-router.get(`/`, getAllUsers);
+const upload = multer({ storage: multer.memoryStorage() });
 router.post(`/`, createOneUser);
-router.get("/:id", getOneUser);
+router.post("/update", upload.single("file"), updateOneUser);
+router.get("/", getOneUser);
 export default router;
