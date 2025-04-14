@@ -3,44 +3,49 @@ import services from "../services/index.js";
 import { useState } from "react";
 
 function Layout() {
-  const [username, setUsername] = useState("");
-  const handleclick = () => {
-    services.user.getAll().then((data) => {
-      console.log(data);
-    });
-  };
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    services.user.createOne({ name: username }).then((data) => {
-      console.log(data);
-    });
-    setUsername("");
-  };
+  // const [username, setUsername] = useState("");
+  // const handleclick = () => {
+  //   services.user.getAll().then((data) => {
+  //     console.log(data);
+  //   });
+  // };
+  // const handleUsernameChange = (event) => {
+  //   setUsername(event.target.value);
+  // };
+  // const handleFormSubmit = (event) => {
+  //   event.preventDefault();
+  //   services.user.createOne({ name: username }).then((data) => {
+  //     console.log(data);
+  //   });
+  //   setUsername("");
+  // };
   return (
     <>
-      <nav
-        style={{
-          padding: "1rem",
-          background: "#eee",
-          display: "flex",
-          gap: "1rem",
-        }}
-      >
+      <nav className="bg-gray-800 text-white flex justify-between p-4">
         <div>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-          <Link to="/posts">Posts</Link>
-          <Link to="/profile">Profile</Link>
+          <Link to="/" className="linkcss">
+            Home
+          </Link>
+          <Link to="/about" className="linkcss">
+            About
+          </Link>
+          <Link to="/posts" className="linkcss">
+            Posts
+          </Link>
+          <Link to="/profile" className="linkcss">
+            Profile
+          </Link>
         </div>
         <div>
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Signup</Link>
+          <Link to="/login" className="linkcss">
+            Login
+          </Link>
+          <Link to="/signup" className="linkcss">
+            Signup
+          </Link>
         </div>
       </nav>
-      <main style={{ padding: "2rem" }}>
+      <main className="bg-gray-400">
         <Outlet />
       </main>
       {/* <button onClick={handleclick}>getAll users</button>

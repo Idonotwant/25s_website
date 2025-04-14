@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.linkcss {
+  @apply mx-2 hover:bg-gray-600;
+}
