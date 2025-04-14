@@ -5,5 +5,5 @@ import csrf from "./api/v1/index.js";
 const rootRouter = express.Router();
 rootRouter.use("/api/v1/users", users);
 rootRouter.use("/api/v1/auth", auth);
-rootRouter.use("/csrf-token", csrf);
+rootRouter.use("/api/v1/csrf-token", csrf);
 export default rootRouter;

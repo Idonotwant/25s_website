@@ -4,4 +4,9 @@ export const user = {
     const { data } = await api.get("/users");
     return data;
   },
+  async createOne({ name }) {
+    console.log("name: ", name);
+    const { data } = await api.post("/users", { name });
+    return data;
+  },
 };

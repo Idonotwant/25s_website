@@ -4,8 +4,16 @@ export async function getAllUsers(req, res) {
   return res.json(allUsers);
 }
 export async function createOneUser(req, res) {
-  const user = await prisma.user.create({ data: { name: req.body.name } });
-  return res.status(201).json(user);
+  try {
+    const user = await prisma.user.create({
+      data: { name: req.body.name },
+    });
+    return res.status(201).json(user);
+  } catch (error) {
+    console.error("Error creating user:", error);
+    console.log("body", req.body);
+    return res.status(500).json({ error: "Failed to create user." });
+  }
 }
 
 export async function getOneUser(req, res) {
