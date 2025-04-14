@@ -1,9 +1,13 @@
 import { user } from "./user.js";
 import { auth } from "./auth.js";
+import { post } from "./post.js";
+import { picture } from "./picture.js";
 import api from "./axiosClient.js";
 const services = {
   auth,
   user,
+  post,
+  picture,
 };
 api.interceptors.request.use(
   async (config) => {
