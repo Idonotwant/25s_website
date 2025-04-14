@@ -1,14 +1,25 @@
 import { prisma } from "../../../../adapters.js";
+import bcrypt from "bcrypt";
+
+async function hashPassword(plainTextPassword) {
+  const saltRounds = 10;
+  return await bcrypt.hash(plainTextPassword, saltRounds);
+}
+async function verifyPassword(plainTextPassword, hashedPassword) {
+  return await bcrypt.compare(plainTextPassword, hashedPassword);
+}
 export async function getAllUsers(req, res) {
   const allUsers = await prisma.user.findMany();
   return res.json(allUsers);
 }
 export async function createOneUser(req, res) {
   try {
+    const { username, password } = req.body;
+    const hashedPassword = await hashPassword(password);
     const user = await prisma.user.create({
-      data: { name: req.body.name },
+      data: { username: username, password: hashedPassword },
     });
-    return res.status(201).json(user);
+    return res.status(201).json(user.id);
   } catch (error) {
     console.error("Error creating user:", error);
     console.log("body", req.body);

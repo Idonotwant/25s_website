@@ -45,7 +45,7 @@ function Layout() {
           </Link>
         </div>
       </nav>
-      <main className="bg-gray-400">
+      <main>
         <Outlet />
       </main>
       {/* <button onClick={handleclick}>getAll users</button>
