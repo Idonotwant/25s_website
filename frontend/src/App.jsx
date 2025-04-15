@@ -7,6 +7,7 @@ import Posts from "./pages/Posts.jsx";
 import Profile from "./pages/Profile.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import DeepSeek from "./pages/DeepSeek.jsx";
 function App() {
   return (
     <HashRouter>
@@ -15,6 +16,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/posts" element={<Posts />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/deepseek" element={<DeepSeek />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<Home />} />

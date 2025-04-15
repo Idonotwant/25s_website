@@ -19,6 +19,9 @@ function Layout() {
           <Link to="/profile" className="linkcss">
             Profile
           </Link>
+          <Link to="/deepseek" className="linkcss">
+            DeepSeek
+          </Link>
         </div>
         <div>
           <Link to="/login" className="linkcss">
