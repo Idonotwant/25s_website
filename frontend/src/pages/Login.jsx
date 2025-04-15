@@ -1,21 +1,39 @@
 import { useState } from "react";
 import services from "../services/index.js";
-function Login() {
+import { useNavigate } from "react-router-dom";
+function Login({ setCurrUser }) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-  const [imgURL, setImgURL] = useState("");
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = JSON.parse(JSON.stringify(formData));
     const response = await services.user.login(data);
-    const imgurl = await services.user.getImage();
-    setImgURL(imgurl);
     setFormData({
       username: "",
       password: "",
     });
+
+    console.log(response.status);
+    if (response.status === 200) {
+      setCurrUser((prev) => ({
+        ...prev,
+        username: response.data.username,
+        img: "",
+      }));
+      try {
+        const imgurl = await services.user.getImage();
+        setCurrUser((prev) => ({
+          ...prev,
+          img: imgurl,
+        }));
+      } catch (error) {
+        console.error("Error fetching image:", error);
+      }
+      navigate("/profile");
+    }
   };
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -27,7 +45,6 @@ function Login() {
 
   return (
     <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-gray-900">
-      {imgURL !== "" ? <img src={imgURL} alt="User Picture" /> : <></>}
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-100">
           Login to your account

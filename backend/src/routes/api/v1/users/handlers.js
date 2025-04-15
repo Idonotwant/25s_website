@@ -16,10 +16,9 @@ export async function createOneUser(req, res) {
       data: { username: username, password: hashedPassword },
     });
     console.log("user created:", user.username);
-    return res.status(201);
+    return res.status(201).json({});
   } catch (error) {
     console.error("Error creating user:", error);
-    console.log("body", req.body);
     return res.status(500).json({ error: "Failed to create user." });
   }
 }

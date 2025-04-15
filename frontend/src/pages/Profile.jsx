@@ -1,11 +1,9 @@
 import service from "../services/index.js";
 import { useState } from "react";
-import mypic from "../../pic/my.jpg";
 
-function Profile() {
+function Profile({ currUser, setCurrUser }) {
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState("");
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -17,7 +15,6 @@ function Profile() {
     e.preventDefault();
     if (!image) return;
     const data = await service.user.uploadImage(image);
-    console.log("data", data);
     setImage(null);
     setImageName("");
   };
@@ -31,17 +28,20 @@ function Profile() {
         <div className="border-b border-gray-600 pb-12">
           <h2 className="text-base font-semibold text-gray-100">Profile</h2>
           <p className="mt-1 text-sm text-gray-400">
-            This information will be displayed publicly so be careful what you
-            share.
+            Welcome, {currUser.username}!
           </p>
 
           {/* Profile Photo */}
           <div className="mt-10 flex flex-col items-center">
-            <img
-              src={mypic}
-              alt="Profile"
-              className="w-32 h-32 rounded-full object-cover shadow-lg mb-4"
-            />
+            {currUser.img === "" ? (
+              <p>upload your photo</p>
+            ) : (
+              <img
+                src={currUser.img}
+                alt="Profile"
+                className="w-32 h-32 rounded-full object-cover shadow-lg mb-4"
+              />
+            )}
             <label
               htmlFor="file-upload"
               className="relative cursor-pointer rounded-md bg-gray-700 font-semibold text-blue-300 focus-within:ring-2 focus-within:ring-blue-400 focus-within:ring-offset-2 hover:text-blue-200"
@@ -71,7 +71,7 @@ function Profile() {
         </button>
         <button
           type="submit"
-          className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
+          className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
         >
           Save
         </button>

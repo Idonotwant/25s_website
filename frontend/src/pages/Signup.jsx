@@ -1,21 +1,27 @@
 import { useState } from "react";
 import services from "../services/index.js";
+import { useNavigate } from "react-router-dom";
 
 function signup() {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = JSON.parse(JSON.stringify(formData));
     const response = await services.user.createOne(data);
-    console.log("response: ", response);
     setFormData({
       username: "",
       password: "",
     });
+    console.log("response", response.status);
+    if (response.status === 201) {
+      console.log("Account created successfully");
+      navigate("/login");
+    }
   };
 
   const handleChange = (event) => {

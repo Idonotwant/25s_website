@@ -17,7 +17,9 @@ export async function login(req, res) {
     } else {
       req.session.userId = user.id;
       console.log("User logged in:", user.username);
-      return res.status(200).json({ message: "Login successful" });
+      return res
+        .status(200)
+        .json({ message: "Login successful", username: user.username });
     }
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });

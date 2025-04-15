@@ -1,12 +1,12 @@
 import api from "./axiosClient.js";
 export const user = {
   async createOne({ username, password }) {
-    const { data } = await api.post("/users", { username, password });
-    return data;
+    const res = await api.post("/users", { username, password });
+    return res;
   },
   async login({ username, password }) {
-    const { data } = await api.post("/auth", { username, password });
-    return data;
+    const res = await api.post("/auth", { username, password });
+    return res;
   },
   async uploadImage(file) {
     const formData = new FormData();

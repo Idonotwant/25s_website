@@ -14,10 +14,9 @@ function About() {
       <div>
         <h1 className="text-2xl font-bold mb-2">About Me</h1>
         <p className="text-gray-300">
-          Hello! My name is [Your Name]. I am a passionate developer who loves
+          Hello! My name is CHEN, WEI-JU. I am a passionate developer who loves
           building web applications and exploring new technologies. In my free
-          time, I enjoy learning, coding, and contributing to open-source
-          projects.
+          time, I enjoy learning and coding.
         </p>
       </div>
     </div>
