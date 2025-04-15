@@ -9,4 +9,12 @@ export const post = {
     const { data } = await api.get("/posts");
     return { data };
   },
+  async deleteOne({ postId }) {
+    const res = await api.delete(`/posts/${postId}`);
+    return res;
+  },
+  async updateOne({ postId, title, content }) {
+    const res = await api.post(`/posts/${postId}`, { title, content });
+    return res;
+  },
 };

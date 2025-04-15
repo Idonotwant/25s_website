@@ -52,9 +52,12 @@ function Posts() {
         <Post
           key={post.id}
           avatar={post.avatarURL} // 你可以根據 user.id 去抓對應頭像
-          username={post.username} // or user.username，如果有的話
+          username={post.user.username} // or user.username，如果有的話
           title={post.title}
           content={post.content}
+          userId={post.userId} // or post.user.id，如果有的話
+          postId={post.id} // or post.id，如果有的話
+          setPosts={setPosts} // Pass setPosts to Post component
         />
       ))}
 

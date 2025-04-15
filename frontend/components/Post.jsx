@@ -1,6 +1,7 @@
 import { useState } from "react";
+import services from "../src/services/index.js";
 
-function Post({ avatar, username, title, content }) {
+function Post({ avatar, username, title, content, userId, postId, setPosts }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedContent, setEditedContent] = useState(content);
@@ -9,13 +10,36 @@ function Post({ avatar, username, title, content }) {
     setIsEditing(!isEditing);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Save logic can be added here
-    setIsEditing(false);
+    const response = await services.post.updateOne({
+      postId,
+      title: editedTitle,
+      content: editedContent,
+    });
+    if (response.status === 200) {
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId
+            ? { ...post, title: editedTitle, content: editedContent } // Update the post with new title and content
+            : post
+        )
+      );
+      setIsEditing(false); // Close the edit mode
+    } else {
+      // Handle error if necessary
+      console.error("Failed to update the post.");
+    }
   };
 
   const handleLeave = () => {
     setIsEditing(false);
+  };
+
+  const handleDelete = async () => {
+    const response = await services.post.deleteOne({ postId });
+
+    setPosts((prevPosts) => prevPosts.filter((p) => p.id !== postId));
   };
 
   return (
@@ -72,6 +96,14 @@ function Post({ avatar, username, title, content }) {
         className="ml-4 text-blue-400 hover:text-blue-600"
       >
         ✏️
+      </button>
+
+      {/* Delete Button */}
+      <button
+        onClick={handleDelete}
+        className="ml-2 text-red-400 hover:text-red-600"
+      >
+        🗑️
       </button>
     </div>
   );

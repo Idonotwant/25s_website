@@ -47,3 +47,62 @@ export async function getALLPosts(req, res) {
     return res.status(500).json({ error: "Failed to fetch posts." });
   }
 }
+
+export async function deletePost(req, res) {
+  try {
+    const postId = parseInt(req.params.postId, 10);
+    const userId = req.session.userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      select: { userId: true },
+    });
+
+    if (!post || post.userId !== userId) {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+
+    await prisma.post.delete({
+      where: { id: postId },
+    });
+    console.log("Post deleted:", postId);
+    console.log("userId", userId);
+    return res.status(200).json({ message: "Post deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    return res.status(500).json({ error: "Failed to delete post." });
+  }
+}
+
+export async function updatePost(req, res) {
+  try {
+    const postId = parseInt(req.params.postId, 10);
+    const userId = req.session.userId;
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      select: { userId: true },
+    });
+    if (!post || post.userId !== userId) {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+    const { title, content } = req.body;
+
+    const updatedPost = await prisma.post.update({
+      where: { id: postId },
+      data: { title, content },
+    });
+    console.log("Post updated:", updatedPost.id);
+    console.log("userId", userId);
+    return res.status(200).json(updatedPost);
+  } catch (error) {
+    console.error("Error updating post:", error);
+    return res.status(500).json({ error: "Failed to update post." });
+  }
+}
