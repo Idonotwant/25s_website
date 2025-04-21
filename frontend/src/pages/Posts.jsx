@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import mypic from "../../pic/my.jpg";
+import default_img from "../../pic/default.jpg";
 import Post from "../../components/Post";
 import services from "../services/index.js";
 
@@ -17,7 +18,15 @@ function Posts() {
 
         const postsWithImgURL = await Promise.all(
           data.map(async (post) => {
-            const imgURL = await services.picture.getOne(post.userId);
+            try {
+              const imgURL = await services.picture.getOne(post.userId);
+            } catch (error) {
+              console.log(
+                "Error fetching image, using default instead:",
+                error
+              );
+              const imgURL = default_img;
+            }
             return { ...post, avatarURL: imgURL };
           })
         );
