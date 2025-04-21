@@ -1,7 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
 
-import { useState } from "react";
-
 function Layout() {
   return (
     <>
@@ -21,6 +19,9 @@ function Layout() {
           </Link>
           <Link to="/deepseek" className="linkcss">
             DeepSeek
+          </Link>
+          <Link to="/changelog" className="linkcss">
+            Changelog
           </Link>
         </div>
         <div>

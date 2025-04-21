@@ -5,6 +5,7 @@ import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Posts from "./pages/Posts.jsx";
 import Profile from "./pages/Profile.jsx";
+import Changelog from "./pages/Changelog.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import DeepSeek from "./pages/DeepSeek.jsx";
@@ -23,6 +24,7 @@ function App() {
             element={<Profile currUser={currUser} setCurrUser={setCurrUser} />}
           />
           <Route path="/deepseek" element={<DeepSeek />} />
+          <Route path="/changelog" element={<Changelog />} />
           <Route path="/login" element={<Login setCurrUser={setCurrUser} />} />
           <Route
             path="/signup"

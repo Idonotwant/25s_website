@@ -18,14 +18,14 @@ function Posts() {
 
         const postsWithImgURL = await Promise.all(
           data.map(async (post) => {
+            let imgURL = default_img;
             try {
-              const imgURL = await services.picture.getOne(post.userId);
+              imgURL = await services.picture.getOne(post.userId);
             } catch (error) {
               console.log(
                 "Error fetching image, using default instead:",
                 error
               );
-              const imgURL = default_img;
             }
             return { ...post, avatarURL: imgURL };
           })
