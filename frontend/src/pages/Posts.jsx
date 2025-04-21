@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import mypic from "../../pic/my.jpg";
-import default_img from "../../pic/default.jpg";
+import default_img from "../../pic/default_img.jpg";
 import Post from "../../components/Post";
 import services from "../services/index.js";
 
